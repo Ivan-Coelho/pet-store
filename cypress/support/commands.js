@@ -148,3 +148,18 @@ Cypress.Commands.add('criarProduto', function (token) {
     })
 })
 
+Cypress.Commands.add("concluirCompra", function(token){
+    cy.request({
+        method:'DELETE',
+        url: 'carrinhos/concluir-compra',
+        headers:{Authorization: token}
+    });        
+});
+
+Cypress.Commands.add("cancelarCompra", function(token){
+    cy.request({
+        method:'DELETE',
+        url: 'carrinhos/cancelar-compra',
+        headers:{Authorization: token}
+    });        
+});
