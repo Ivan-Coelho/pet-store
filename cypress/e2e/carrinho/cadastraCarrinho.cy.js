@@ -121,9 +121,9 @@ describe('teste do carrinho', function () {
             expect(response.body.carrinhos[0].produtos).to.be.an('array').to.have.lengthOf(5);
         })
 
-     });
+    });
 
-     it('Ao acresentar o produto no carrinho, a quantidade deve diminuir no estoque', function(){
+    it('Ao acresentar o produto no carrinho, a quantidade deve diminuir no estoque', function(){
 
         cy.request({
             method: 'POST',
@@ -148,9 +148,9 @@ describe('teste do carrinho', function () {
         })
         
 
-     });
+    });
 
-     it('Ao concluir a compra, os produtos não devem voltar ao estoque', function(){
+    it('Ao concluir a compra, os produtos não devem voltar ao estoque', function(){
         cy.request({
             method:'POST',
             url:'carrinhos',
@@ -175,9 +175,9 @@ describe('teste do carrinho', function () {
             expect(response.body.quantidade).to.equal(49)
         })
 
-     });
+    });
 
-     it('Ao cancelar a compra, os produtos devem retornar ao estoque', function(){
+    it('Ao cancelar a compra, os produtos devem retornar ao estoque', function(){
 
         cy.request({
             method:'POST',
@@ -203,8 +203,32 @@ describe('teste do carrinho', function () {
             expect(response.body.quantidade).to.equal(50)
         });
 
-     });
+    });
 
-     it('')
+    it('O preço total deve corresponder a soma do preço dos produtos no carrinho', function(){
+        cy.request({
+            method: 'POST',
+            url: 'carrinhos',
+            headers:{Authorization: usuario.token},
+            body:{
+                "produtos": [
+                  {
+                    idProduto: produto._id,
+                    quantidade: 10
+                  }
+                ]              
+            }
+        });
+
+        cy.request({
+            method:'GET',
+            url:'carrinhos',
+            qs:{idUsuario: usuario._id}
+        }).then(function(response){
+            expect(response.body.carrinhos[0].precoTotal).to.equal(420)
+        })
+
+
+    });
 
 });
